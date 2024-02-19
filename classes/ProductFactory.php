@@ -44,26 +44,4 @@ class ProductFactory {
     }
 }
 
-function handleFormData() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sku = $_POST['sku'];
-        $name = $_POST['name'];
-        $price = $_POST['price'];
-        $productType = $_POST['productType'];
-        $postData = $_POST;
-
-        $db = new Database();
-
-
-        $product = ProductFactory::createProduct($sku, $name, $price, $productType, $postData);
-
-
-        $result = $product->save($db);
-        if ($result === true) {
-            header("Location: /index.php");
-            exit();
-        }
-    }
-}
-
-handleFormData();
+Product::handleFormData();

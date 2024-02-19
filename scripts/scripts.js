@@ -1,3 +1,34 @@
+$(document).ready(function() {
+    $('#product_form').submit(function(event) {
+        event.preventDefault(); 
+      
+        if (validateForm()) {
+            var formData = $(this).serialize();
+        
+            $.ajax({
+                type: 'POST',
+                url: 'functions/create_product.php',
+                data: formData,
+                success: function(response) {
+                    if (response === 'Failed') {
+                        alert('SKU already exists. Please enter a different SKU.');
+                    } else {
+                        window.location.href = "/index.php"; 
+                    }
+                }, 
+                error: function(xhr, status, error) {
+                    if (xhr.status === 409) {
+                        alert('SKU already exists. Please enter a different SKU.');
+                    } else {
+                        alert('An error occurred while processing your request. Please try again later.');
+                        console.error(xhr.responseText); 
+                    }
+                }
+            });
+        } 
+    });
+});
+
 function showProductTypeFields() {
     var productType = document.getElementById("productType").value;
     document.getElementById("selectedProductType").value = productType;
